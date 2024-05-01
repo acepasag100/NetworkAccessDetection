@@ -1,11 +1,15 @@
-﻿namespace NetworkAccessDetection
+﻿using NetworkAccessDetection.Service;
+
+namespace NetworkAccessDetection
 {
     public partial class MainPage : ContentPage
     {
         int count = 0;
+        private readonly IRickAndMortyService service;
 
-        public MainPage()
+        public MainPage(IRickAndMortyService service)
         {
+            this.service = service;
             InitializeComponent();
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
         }
@@ -20,16 +24,12 @@
             }
         }
 
-        private void OnCounterClicked(object sender, EventArgs e)
+        private async void OnCounterClicked(object sender, EventArgs e)
         {
-            count++;
-
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
+            loading.IsVisible = true;
+            var data = await service.Obtainer();
+            lvPerson.ItemsSource = data;
+            loading.IsVisible = false;
         }
     }
 
