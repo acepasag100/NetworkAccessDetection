@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using NetworkAccessDetection.Service;
 
 namespace NetworkAccessDetection
 {
@@ -15,6 +16,9 @@ namespace NetworkAccessDetection
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
+            //Inject
+            builder.Services.AddSingleton<IRickAndMortyService, RickAndMortyService>();
+            builder.Services.AddTransient<MainPage>();
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
